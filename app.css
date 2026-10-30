@@ -65,3 +65,20 @@ details{border-top:1px solid var(--line);margin-top:10px;padding-top:6px}summary
 .more{color:var(--acc);background:none;border:0;font-size:15px;min-height:44px;padding:0}
 .it .dl{display:none;font-size:13px;color:var(--mut);margin-top:4px}.it.open .dl{display:block}
 .dt{padding:7px 0;font-size:15px;border-bottom:1px solid var(--line)}.dt:last-child{border:0}
+.tchip{display:inline-block;margin:6px 0 2px;padding:3px 9px;border-radius:12px;background:var(--chip);color:var(--ink);font-size:13px;font-weight:600;font-variant-numeric:tabular-nums}
+.tchip.soon{background:#fff3cd;color:#7a5200}.tchip.od{background:var(--bad);color:#fff;animation:pulse 1.2s infinite}.tchip.done{background:#e3f4e5;color:#1b5e20}.tchip.done.late{background:#ffe0e0;color:#a00}
+.dark .tchip.done{background:#1d3a22;color:#9be3a4}.dark .tchip.soon{background:#4a3b00;color:#ffe18a}
+@keyframes pulse{50%{opacity:.7}}
+.it .tchip{display:block;width:max-content;max-width:100%}
+.tlist{margin-top:8px;border-top:1px dashed var(--line);padding-top:4px}.trow{display:flex;justify-content:space-between;align-items:center;gap:8px;font-size:14px}.trow .tl{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.trow .tchip{margin:3px 0;flex:none}
+.sc{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}.scb{display:inline-flex;align-items:center;min-height:38px;padding:0 12px;border-radius:19px;border:1.5px solid var(--acc);color:var(--acc);text-decoration:none;font-size:14px;font-weight:600}
+.esb{display:inline-block;background:#00695c;color:#fff;border-radius:5px;padding:0 5px;font-size:11px;font-weight:700;vertical-align:1px}
+.tool{align-items:center}.tool .ic{font-size:22px;width:30px;text-align:center}
+.res{background:var(--card);border:2px solid var(--ok);border-radius:16px;padding:14px;margin-bottom:12px}.res.bad{border-color:var(--bad)}.res.mute{border-color:var(--line);color:var(--mut)}
+.rm{font-size:24px;font-weight:700}.rs{font-size:14px;margin-top:6px;line-height:1.5}
+.fx{font-family:ui-monospace,Menlo,monospace;font-size:12.5px;line-height:1.6;padding-top:4px}
+.ue{background:#ffe0b2;color:#7a3e00;border-radius:5px;padding:0 5px;font-size:12px;font-weight:700}
+.ncard{border-color:var(--acc)}
+input:disabled{opacity:.5}
+#tabs button span{white-space:nowrap}
+.stk{position:sticky;top:calc(56px + var(--sa));z-index:5;margin:-12px -12px 10px;padding:8px 12px 2px;background:var(--bg)}.stk .res{margin-bottom:6px;box-shadow:0 4px 12px rgba(0,0,0,.08)}.stk .rs{max-height:22vh;overflow:auto}
