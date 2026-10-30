@@ -1,0 +1,4 @@
+# never commit book-derived content
+*bookpack*
+*.pdf
+chapters_built.json

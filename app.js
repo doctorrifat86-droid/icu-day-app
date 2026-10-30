@@ -114,7 +114,7 @@ function stepper(id){const p=getP(id);if(!p)return go('today');tab('');const d=d
  V.innerHTML=` <div class="mut" style="margin-bottom:6px">${L.length-pend.length} of ${L.length} done today · ${pend.length} left</div><div class="prog" style="margin-bottom:12px"><i style="width:${Math.round(100*(L.length-pend.length)/L.length)}%"></i></div>
  <div class="card step" id="stp"><div class="ph">${d===0?PH[ph]:dayName(d)+' · '+PH[ph]} · ${k+1} of ${inPh.length}${d===0&&hrs(p)>phaseDue(0,ph)?' · <span style="color:var(--bad)">OVERDUE</span>':''}</div>
  ${U2.chip(p,d,a)}<div class="act"><span class="pr pr${a.pr||'E'}">${a.pr||'E'}</span>${txt(p,a)}</div><div class="sec">${esc(PRN[a.pr||'E'])}${a.src?' · <span class="esb">ESICM</span>':''}</div>${U2.shortcuts(a,p)}
- ${a.det&&a.det.length?`<div class="card" style="margin:6px 0 0;padding:8px 12px">${a.det.map(x=>`<div class="dt">• ${doses(x,p.w)}</div>`).join('')}</div>`:''}<details><summary>Why · details · ACE source</summary><div class="src">${srcOf(a)}</div>${why.map(w=>`<div class="alert" style="border-left-color:var(--acc)">${w}</div>`).join('')}${sib(p,a).map(x=>`<div class="mut" style="margin-top:6px">• ${x}</div>`).join('')}<button class="btn g full tap" id="card">Open full protocol card</button></details>
+ ${a.det&&a.det.length?`<div class="card" style="margin:6px 0 0;padding:8px 12px">${a.det.map(x=>`<div class="dt">• ${doses(x,p.w)}</div>`).join('')}</div>`:''}<details><summary>Why · details · ACE source</summary><div class="src">${srcOf(a)}</div>${why.map(w=>`<div class="alert" style="border-left-color:var(--acc)">${w}</div>`).join('')}${sib(p,a).map(x=>`<div class="mut" style="margin-top:6px">• ${x}</div>`).join('')}<button class="btn g full tap" id="card">Open full protocol card</button></details>${window.BOOK.stepHtml(a.tp)}
  ${st(p,d,a.i)==='s'?'<div class="mut" style="margin-top:8px">Skipped earlier</div>':''}</div>`+alerts(p,2,true);
  bar(`<button class="btn g tap" id="sk">Skip</button><button class="btn tap" id="na">N/A</button><button class="btn ok tap" id="dn" style="flex:1.6">✓ Done</button>`);
  const adv=v=>{buzz();setSt(p,d,a.i,v);const c=$('#stp');c.classList.add('out');setTimeout(()=>stepper(id),160)};
@@ -127,7 +127,7 @@ function alerts(p,n,compact){const b=build(p);const l=(b.ph.esc||[]);if(!l.lengt
 function overview(id,sub){const p=getP(id);if(!p)return go('today');tab('');const d=dayOf(p),b=build(p);head(pLabel(p),dayName(d)+' · admitted '+fmt(p.admit),1);
  const mode=sub||S.mode||'now';const n=nowInfo(p);
  let h=`<div class="card"><div>${b.tps.map(t=>`<span class="chip">${esc(TOP[t].title)}</span>`).join('')||'<span class="mut">General plan</span>'}</div><div class="mut" style="margin-top:6px">${p.w?esc(p.w)+' kg · ':''}${n.doneN}/${n.n} done today${n.od?' · <b style="color:var(--bad)">overdue items</b>':''}</div></div>`;
- h+=`<div class="nnl">${[['now','Now'],['next','Next'],['later','Later'],['esc','Alerts'],['days','Days']].map(([k,l])=>`<button class="${mode===k?'on':''}" data-m="${k}">${l}</button>`).join('')}</div><div id="sub"></div>`+U2.timeline(p);
+ h+=`<div class="nnl">${[['now','Now'],['next','Next'],['later','Later'],['esc','Alerts'],['days','Days']].map(([k,l])=>`<button class="${mode===k?'on':''}" data-m="${k}">${l}</button>`).join('')}</div><div id="sub"></div>`+window.BOOK.sugHtml(p,b.tps)+U2.timeline(p);
  V.innerHTML=h+`<div class="row" style="margin-top:8px"><button class="btn g tap" id="edit">Edit diagnoses</button><button class="btn g tap" id="del">Discharge</button></div>`+foot();
  bar(n.left?`<button class="btn p tap" id="gs">▶ Guide me: next step (${n.left} left)</button>`:`<button class="btn p tap" id="gs">Today done ✓ · review</button>`);
  $('#gs').onclick=()=>go('step/'+id);$('#edit').onclick=()=>{W={step:2,p:p,ago:-1,edit:1};S.patients=S.patients.filter(x=>x!==p);delete cache[p.id];go('new')};
@@ -162,11 +162,11 @@ function settings(){tab('settings');head('Settings','Alerts · backup · data st
  $('#im').onchange=e=>{const f=e.target.files[0];if(!f)return;f.text().then(t=>{const o=JSON.parse(t);if(!o.patients)throw 0;S=o;save();toast('Imported '+o.patients.length+' patients');go('today')}).catch(()=>toast('Not a valid backup'))}}
 function route(){const h=location.hash.slice(1)||'today',[r,a,b]=h.split('/');
  if(r!=='new'&&W&&W.edit){S.patients.push(W.p);save();W=null}
- if(r==='new'){if(W&&W.edit&&W.step===4){}wizard()}else if(r==='step')stepper(a);else if(r==='p')overview(a,b);else if(r==='ref')ref(a,b!=null?+b:null);else if(r==='settings')settings();else if(r==='tools'){tab('tools');bar('');U2.page(V,a,b)}else today();
+ if(r==='new'){if(W&&W.edit&&W.step===4){}wizard()}else if(r==='step')stepper(a);else if(r==='p')overview(a,b);else if(r==='ref')ref(a,b!=null?+b:null);else if(r==='settings')settings();else if(r==='lib')window.BOOK.page(V,a,b);else if(r==='tools'){tab('tools');bar('');U2.page(V,a,b)}else today();
  if(r!=='ref'||b==null)scrollTo(0,0);U2.tick()}
 // wizard save in edit mode: re-add patient
 const _wiz=wizard;
-U2.init({S:()=>S,save,dayOf,dayList,st,pending:(p,d,a)=>pending(p,d,a),getP:id=>S.patients.find(x=>x.id===id),head,foot,go,toast,pLabel,rerender:()=>route()});
+window.BOOK.init({tab,bar,head,foot,toast});U2.init({S:()=>S,save,dayOf,dayList,st,pending:(p,d,a)=>pending(p,d,a),getP:id=>S.patients.find(x=>x.id===id),head,foot,go,toast,pLabel,rerender:()=>route()});
 addEventListener('hashchange',route);route();
 if('serviceWorker'in navigator&&location.protocol.startsWith('http'))navigator.serviceWorker.register('sw.js').catch(()=>{});
 window.__icu={build,S:()=>S};
